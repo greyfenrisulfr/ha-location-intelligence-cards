@@ -1,7 +1,6 @@
 {
-  "name": "Home Assistant Location Intelligence",
+  "name": "Home Assistant Location Intelligence Cards",
   "render_readme": true,
   "content_in_root": false,
   "filename": "dist/location-intelligence.js"
 }
-

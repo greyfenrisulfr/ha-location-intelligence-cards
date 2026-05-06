@@ -1,9 +1,9 @@
 {
-  "name": "ha-location-intelligence",
+  "name": "ha-location-intelligence-cards",
   "version": "0.1.0",
   "private": false,
   "type": "module",
-  "description": "Home Assistant custom cards for location intelligence and spatial awareness.",
+  "description": "Frontend-only Home Assistant custom cards for location intelligence and spatial awareness.",
   "license": "MIT",
   "scripts": {
     "build": "vite build",
@@ -24,4 +24,3 @@
     "vite": "^7.1.12"
   }
 }
-

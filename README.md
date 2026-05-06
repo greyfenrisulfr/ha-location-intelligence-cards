@@ -1,18 +1,12 @@
-# Home Assistant Location Intelligence
+# Home Assistant Location Intelligence Cards
 
-Frontend-first scaffolding for a Home Assistant location intelligence layer focused on conservative, explainable spatial awareness.
+Frontend-only Lovelace scaffolding for conservative, explainable spatial awareness cards that pair with the backend integration at `greyfenrisulfr/location_intelligence`.
 
 ## Included cards
 
 - `location-intelligence-compass-card`
 - `location-intelligence-subject-list-card`
 - `location-intelligence-dashboard-card`
-
-## Repository structure
-
-- `src/`: Lovelace custom card sources and shared UI utilities
-- `dist/`: compiled browser bundle output
-- `custom_components/location_intelligence/`: starter integration namespace for backend work
 
 ## Design goals
 
@@ -35,6 +29,10 @@ These cards currently expect Home Assistant entities whose attributes expose som
 - `last_reported`
 
 The backend integration can later normalize these attributes from fused sources.
+
+That backend lives in the separate repository:
+
+- `https://github.com/greyfenrisulfr/location_intelligence`
 
 ## Example Lovelace config
 
