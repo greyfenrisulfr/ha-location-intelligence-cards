@@ -6,7 +6,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, "src/index.ts"),
       formats: ["es"],
-      fileName: () => "location-intelligence.js"
+      fileName: () => "ha-location-intelligence-cards.js"
     },
     outDir: "dist",
     sourcemap: true,
@@ -17,4 +17,3 @@ export default defineConfig({
     }
   }
 });
-

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.1 - 2026-05-06
+
+- Fixed HACS packaging by tracking the built `dist` artifact in the repository.
+- Renamed the built card asset to `ha-location-intelligence-cards.js` to align with the repository name.
+- Updated HACS and README references to the tracked distributable filename.
+
 ## 0.2.0 - 2026-05-06
 
 - Added a documented roadmap for the card package.

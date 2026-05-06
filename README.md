@@ -95,6 +95,6 @@ npm run check
 npm run build
 ```
 
-Load `dist/location-intelligence.js` as a Lovelace resource.
+Load `dist/ha-location-intelligence-cards.js` as a Lovelace resource.
 
 The current baseline also exposes Home Assistant custom-card metadata and a basic config editor for manual setup in the UI.
