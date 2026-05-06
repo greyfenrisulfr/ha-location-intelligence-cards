@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2 - 2026-05-06
+
+- Added compatibility with the current `greyfenrisulfr/location_intelligence` backend subject sensor attributes.
+- Derived display fields from backend data such as `reference_place_name`, `source_count`, and `observed_at` instead of requiring placeholder aliases.
+- Updated card stub configs, editor hints, and README examples to target per-subject `sensor.*_status` entities.
+
 ## 0.2.1 - 2026-05-06
 
 - Fixed HACS packaging by tracking the built `dist` artifact in the repository.

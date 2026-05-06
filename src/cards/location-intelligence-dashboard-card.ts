@@ -42,8 +42,8 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
     return {
       type: "custom:location-intelligence-dashboard-card",
       title: "Spatial awareness",
-      focus_entity: "sensor.location_intelligence",
-      entities: ["sensor.location_intelligence"]
+      focus_entity: "sensor.subject_status",
+      entities: ["sensor.subject_status"]
     };
   }
 
@@ -89,8 +89,8 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
                         <strong>${bearingToDirection(focus.bearingDeg)}</strong>
                       </div>
                       <div>
-                        <span>Likely place</span>
-                        <strong>${focus.likelyLocation ?? "Unknown"}</strong>
+                        <span>Place</span>
+                        <strong>${focus.likelyLocation ?? focus.referencePlaceName ?? "Unknown"}</strong>
                       </div>
                     </div>
                   </section>
@@ -107,7 +107,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
                         (snapshot) => html`
                           <article>
                             <strong>${snapshot.name}</strong>
-                            <span>${snapshot.likelyLocation ?? "Unknown place"}</span>
+                            <span>${snapshot.likelyLocation ?? snapshot.referencePlaceName ?? "Unknown place"}</span>
                             <span>${formatDistance(snapshot.distanceM)}</span>
                           </article>
                         `

@@ -25,31 +25,76 @@ const numberOrUndefined = (value: unknown): number | undefined => {
   return undefined;
 };
 
+const stringOrUndefined = (value: unknown): string | undefined => {
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const trimmed = value.trim();
+  return trimmed === "" ? undefined : trimmed;
+};
+
+const prettifyName = (value: string): string =>
+  value
+    .replace(/^sensor\./, "")
+    .replace(/_status$/, "")
+    .replace(/_/g, " ");
+
+const titleCase = (value: string): string =>
+  value.replace(/\b\w/g, (match) => match.toUpperCase());
+
+const sourceCountLabel = (count?: number): string | undefined => {
+  if (count === undefined) {
+    return undefined;
+  }
+
+  return `${count} source${count === 1 ? "" : "s"}`;
+};
+
 export const entityToSnapshot = (entity: HassEntity): LocationSnapshot => ({
+  subjectId: stringOrUndefined(entity.attributes.subject_id),
   entityId: entity.entity_id,
-  name:
-    String(entity.attributes.friendly_name ?? entity.entity_id)
-      .replace(/^sensor\./, "")
-      .replace(/_/g, " "),
+  name: titleCase(
+    prettifyName(
+      String(
+        entity.attributes.friendly_name ??
+          stringOrUndefined(entity.attributes.subject_id) ??
+          entity.entity_id
+      )
+    )
+  ),
   subjectType: String(entity.attributes.subject_type ?? "subject"),
   likelyLocation:
-    typeof entity.attributes.likely_location === "string"
-      ? entity.attributes.likely_location
-      : undefined,
-  distanceM: numberOrUndefined(entity.attributes.distance_m),
-  bearingDeg: numberOrUndefined(entity.attributes.bearing_deg),
+    stringOrUndefined(entity.attributes.likely_location) ??
+    stringOrUndefined(entity.attributes.reference_place_name),
+  distanceM:
+    numberOrUndefined(entity.attributes.distance_m) ??
+    numberOrUndefined(entity.attributes.distance_from_reference_m) ??
+    numberOrUndefined(entity.attributes.distance_from_home_m),
+  bearingDeg:
+    numberOrUndefined(entity.attributes.bearing_deg) ??
+    numberOrUndefined(entity.attributes.bearing_from_reference_deg) ??
+    numberOrUndefined(entity.attributes.bearing_from_home_deg),
   confidence: numberOrUndefined(entity.attributes.confidence),
+  confidenceLabel: stringOrUndefined(entity.attributes.confidence_label),
   sourceLabel:
-    typeof entity.attributes.source_label === "string"
-      ? entity.attributes.source_label
-      : undefined,
+    stringOrUndefined(entity.attributes.source_label) ??
+    sourceCountLabel(numberOrUndefined(entity.attributes.source_count)),
+  sourceCount: numberOrUndefined(entity.attributes.source_count),
+  accuracyM: numberOrUndefined(entity.attributes.accuracy_m),
+  latitude: numberOrUndefined(entity.attributes.latitude),
+  longitude: numberOrUndefined(entity.attributes.longitude),
+  referencePlaceName: stringOrUndefined(entity.attributes.reference_place_name),
+  referencePlaceKind: stringOrUndefined(entity.attributes.reference_place_kind),
   state: entity.state,
   lastReported:
-    typeof entity.attributes.last_reported === "string"
+    stringOrUndefined(entity.attributes.last_reported) ??
+    stringOrUndefined(entity.attributes.observed_at) ??
+    (typeof entity.attributes.last_reported === "string"
       ? entity.attributes.last_reported
       : entity.last_updated
         ? entity.last_updated
-        : undefined,
+        : undefined),
   raw: entity
 });
 
@@ -111,11 +156,11 @@ export const confidenceTone = (confidence?: number): "high" | "medium" | "low" |
 
 export const formatLocationSummary = (snapshot: LocationSnapshot): string => {
   if (snapshot.likelyLocation && snapshot.distanceM !== undefined) {
-    return `Probably at ${snapshot.likelyLocation}, ${formatDistance(snapshot.distanceM).toLowerCase()}`;
+    return `Probably near ${snapshot.likelyLocation}, ${formatDistance(snapshot.distanceM).toLowerCase()}`;
   }
 
   if (snapshot.likelyLocation) {
-    return `Probably at ${snapshot.likelyLocation}`;
+    return `Probably near ${snapshot.likelyLocation}`;
   }
 
   if (snapshot.distanceM !== undefined) {
@@ -123,6 +168,22 @@ export const formatLocationSummary = (snapshot: LocationSnapshot): string => {
   }
 
   return "Probable location unknown";
+};
+
+export const formatAccuracy = (accuracyM?: number): string => {
+  if (accuracyM === undefined) {
+    return "Accuracy unknown";
+  }
+
+  if (accuracyM < 25) {
+    return `~${Math.round(accuracyM)} m accuracy`;
+  }
+
+  if (accuracyM < 1000) {
+    return `~${Math.round(accuracyM / 5) * 5} m accuracy`;
+  }
+
+  return `~${(accuracyM / 1000).toFixed(1)} km accuracy`;
 };
 
 export const formatUpdated = (value?: string): string => {
@@ -142,4 +203,3 @@ export const formatUpdated = (value?: string): string => {
     minute: "2-digit"
   });
 };
-

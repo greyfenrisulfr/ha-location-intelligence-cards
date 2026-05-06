@@ -9,6 +9,7 @@ import type { LocationIntelligenceCardConfig } from "../types/location";
 import {
   bearingToDirection,
   entityToSnapshot,
+  formatAccuracy,
   formatDistance,
   formatLocationSummary,
   formatUpdated
@@ -43,7 +44,7 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
   public static getStubConfig(): LocationIntelligenceCardConfig {
     return {
       type: "custom:location-intelligence-compass-card",
-      entity: "sensor.location_intelligence"
+      entity: "sensor.subject_status"
     };
   }
 
@@ -83,18 +84,19 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
                 <strong>${formatDistance(snapshot.distanceM)}</strong>
               </div>
               <div class="metric">
-                <span class="label">Likely place</span>
-                <strong>${snapshot.likelyLocation ?? "Unknown"}</strong>
+                <span class="label">Place</span>
+                <strong>${snapshot.likelyLocation ?? snapshot.referencePlaceName ?? "Unknown"}</strong>
               </div>
               <div class="metric">
                 <span class="label">Source</span>
-                <strong>${snapshot.sourceLabel ?? "Not classified"}</strong>
+                <strong>${snapshot.sourceLabel ?? snapshot.confidenceLabel ?? "Not classified"}</strong>
               </div>
             </div>
           </div>
 
           <div class="footer">
             <span class="chip">Updated ${formatUpdated(snapshot.lastReported)}</span>
+            <span class="chip">${formatAccuracy(snapshot.accuracyM)}</span>
             ${snapshot.state ? html`<span class="chip">State ${snapshot.state}</span>` : nothing}
           </div>
         </div>

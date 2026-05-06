@@ -41,20 +41,33 @@ Frontend-only Lovelace scaffolding for conservative, explainable spatial awarene
 - Work for people, pets, vehicles, phones, assets, and temporary places.
 - Fit mobile and desktop Home Assistant dashboards.
 
-## Expected entity shape
+## Backend compatibility
 
-These cards currently expect Home Assistant entities whose attributes expose some or all of:
+The cards now support both:
 
-- `friendly_name`
-- `distance_m`
-- `bearing_deg`
+- the original placeholder frontend attributes
+- the current backend output from `greyfenrisulfr/location_intelligence`
+
+For the backend integration, use the per-subject `status` sensors as card entities. Those sensors already expose the main data the cards need, including:
+
+- `subject_id`
+- `latitude`
+- `longitude`
 - `confidence`
-- `likely_location`
-- `source_label`
-- `subject_type`
-- `last_reported`
+- `confidence_label`
+- `source_count`
+- `accuracy_m`
+- `observed_at`
+- `reference_place_name`
+- `reference_place_kind`
+- `distance_from_reference_m`
+- `bearing_from_reference_deg`
+- `direction_from_reference`
+- `distance_from_home_m`
+- `bearing_from_home_deg`
+- `direction_from_home`
 
-The backend integration can later normalize these attributes from fused sources.
+The backend does not currently expose the original placeholder aliases `likely_location`, `source_label`, or `last_reported` on those subject sensors, so the frontend now derives equivalent display values from the backend fields instead of requiring those aliases.
 
 That backend lives in the separate repository:
 
@@ -64,7 +77,7 @@ That backend lives in the separate repository:
 
 ```yaml
 type: custom:location-intelligence-compass-card
-entity: sensor.alice_location_intelligence
+entity: sensor.alice_status
 name: Alice
 ```
 
@@ -72,19 +85,19 @@ name: Alice
 type: custom:location-intelligence-subject-list-card
 title: Nearby Subjects
 entities:
-  - sensor.alice_location_intelligence
-  - sensor.car_location_intelligence
-  - sensor.dog_location_intelligence
+  - sensor.alice_status
+  - sensor.car_status
+  - sensor.dog_status
 ```
 
 ```yaml
 type: custom:location-intelligence-dashboard-card
 title: Spatial Awareness
-focus_entity: sensor.alice_location_intelligence
+focus_entity: sensor.alice_status
 entities:
-  - sensor.alice_location_intelligence
-  - sensor.car_location_intelligence
-  - sensor.bag_location_intelligence
+  - sensor.alice_status
+  - sensor.car_status
+  - sensor.bag_status
 ```
 
 ## Development

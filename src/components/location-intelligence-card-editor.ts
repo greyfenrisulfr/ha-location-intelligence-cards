@@ -51,7 +51,7 @@ export class LocationIntelligenceCardEditorElement
                 <input
                   .value=${this.config.entity ?? ""}
                   @input=${this.onTextInput("entity")}
-                  placeholder="sensor.alice_location_intelligence"
+                  placeholder="sensor.alice_status"
                 />
               </label>
             `
@@ -60,7 +60,7 @@ export class LocationIntelligenceCardEditorElement
                 <span>Entities</span>
                 <textarea
                   @input=${this.onEntitiesInput}
-                  placeholder="sensor.alice_location_intelligence&#10;sensor.car_location_intelligence"
+                  placeholder="sensor.alice_status&#10;sensor.car_status"
                 >
 ${(this.config.entities ?? []).join("\n")}</textarea
                 >
@@ -78,8 +78,8 @@ ${(this.config.entities ?? []).join("\n")}</textarea
 
         <p class="hint">
           ${this.mode === "single"
-            ? "Use a single location intelligence entity."
-            : "Enter one entity id per line."}
+            ? "Use a single per-subject status sensor from the backend integration."
+            : "Enter one per-subject status sensor entity id per line."}
         </p>
       </div>
     `;

@@ -42,7 +42,7 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
     return {
       type: "custom:location-intelligence-subject-list-card",
       title: "Location overview",
-      entities: ["sensor.location_intelligence"]
+      entities: ["sensor.subject_status"]
     };
   }
 
@@ -75,7 +75,7 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
                       <div class="summary">
                         <span>${formatDistance(snapshot.distanceM)}</span>
                         <span>${bearingToDirection(snapshot.bearingDeg)}</span>
-                        <span>${snapshot.likelyLocation ?? "Location unknown"}</span>
+                        <span>${snapshot.likelyLocation ?? snapshot.referencePlaceName ?? "Location unknown"}</span>
                       </div>
 
                       <div class="meta">
