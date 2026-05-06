@@ -127,6 +127,8 @@ HACS should register the frontend resource automatically. If the card does not a
 - URL: `/hacsfiles/ha-location-intelligence-cards/ha-location-intelligence-cards.js`
 - Type: `module`
 
+If you still see `Custom element doesn't exist`, remove any stale resource entry for this card, add the path above, then reload the browser.
+
 ### Manual
 
 Build the project and load the generated bundle as a Lovelace resource.

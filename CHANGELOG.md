@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.1 - 2026-05-06
+
+- Corrected the HACS/manual resource path documentation back to `/hacsfiles/ha-location-intelligence-cards/ha-location-intelligence-cards.js`.
+- Restored the HACS plugin filename metadata to `ha-location-intelligence-cards.js` so HACS can resolve the built card bundle correctly.
+- Published a clean follow-up release because the `v0.3.0` tag on GitHub pointed to the older `0.2.3` commit instead of the intended Phase 1 release commit.
+
 ## 0.3.0 - 2026-05-06
 
 - Completed the Phase 1 baseline package and marked it as such in the README.
