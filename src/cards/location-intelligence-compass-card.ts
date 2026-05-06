@@ -150,7 +150,7 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
       .metric {
         padding: 0.95rem;
         border-radius: 16px;
-        background: rgba(255, 255, 255, 0.7);
+        background: var(--li-surface);
         border: 1px solid var(--li-border);
       }
 

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.2 - 2026-05-06
+
+- Added dark mode support across the cards, shared tokens, and built-in editor using Home Assistant theme-aware surfaces and text colors.
+- Replaced remaining hardcoded light backgrounds in the compass, list, dashboard, confidence chip, and direction ring so the UI stays readable in dark themes.
+
 ## 0.3.1 - 2026-05-06
 
 - Corrected the HACS/manual resource path documentation back to `/hacsfiles/ha-location-intelligence-cards/ha-location-intelligence-cards.js`.

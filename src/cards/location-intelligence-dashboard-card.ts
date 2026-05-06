@@ -330,7 +330,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
       .row {
         padding: 0.9rem;
         border-radius: 16px;
-        background: rgba(255, 255, 255, 0.72);
+        background: var(--li-surface);
         border: 1px solid var(--li-border);
       }
 
@@ -367,8 +367,8 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         margin-top: 0.75rem;
         border-radius: 24px;
         background:
-          radial-gradient(circle at center, rgba(255, 255, 255, 0.84) 0 18%, rgba(255, 255, 255, 0) 19%),
-          linear-gradient(180deg, rgba(255, 255, 255, 0.64), rgba(255, 255, 255, 0.4));
+          radial-gradient(circle at center, var(--li-surface-strong) 0 18%, transparent 19%),
+          linear-gradient(180deg, var(--li-surface), color-mix(in srgb, var(--li-surface) 72%, transparent));
         border: 1px solid var(--li-border);
         overflow: hidden;
       }
@@ -380,7 +380,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
 
       .ring {
         border-radius: 50%;
-        border: 1px dashed rgba(40, 76, 63, 0.2);
+        border: 1px dashed var(--li-dashed-border);
       }
 
       .ringOuter {
@@ -396,7 +396,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         bottom: 8%;
         left: calc(50% - 0.5px);
         width: 1px;
-        background: rgba(40, 76, 63, 0.14);
+        background: var(--li-axis);
       }
 
       .axisHorizontal {
@@ -404,7 +404,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         right: 8%;
         top: calc(50% - 0.5px);
         height: 1px;
-        background: rgba(40, 76, 63, 0.14);
+        background: var(--li-axis);
       }
 
       .point {
@@ -420,8 +420,8 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         color: white;
         font-size: 0.82rem;
         font-weight: 800;
-        border: 2px solid rgba(255, 255, 255, 0.85);
-        box-shadow: 0 10px 22px rgba(31, 42, 42, 0.18);
+        border: 2px solid var(--li-point-border);
+        box-shadow: var(--li-shadow-strong);
       }
 
       .roster {
@@ -440,8 +440,8 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
       }
 
       .rowFocus {
-        background: rgba(255, 255, 255, 0.82);
-        border-color: rgba(40, 76, 63, 0.28);
+        background: var(--li-surface-strong);
+        border-color: color-mix(in srgb, var(--li-accent-soft) 26%, transparent);
       }
 
       .summary {
@@ -453,7 +453,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
       .summary span {
         padding: 0.28rem 0.55rem;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.7);
+        background: var(--li-surface);
         border: 1px solid var(--li-border);
       }
 

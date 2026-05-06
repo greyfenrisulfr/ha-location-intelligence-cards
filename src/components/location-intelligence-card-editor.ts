@@ -1,6 +1,7 @@
 import { LitElement, css, html, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import type { HassEntity, HomeAssistant, LovelaceCardEditor } from "../types/home-assistant";
+import { cardStyles } from "../styles/tokens";
 import type { LocationIntelligenceCardConfig } from "../types/location";
 
 type EditorMode = "single" | "multiple";
@@ -245,16 +246,18 @@ ${selectedEntities.join("\n")}</textarea
     );
   }
 
-  static styles = css`
-    :host {
+  static styles = [
+    cardStyles,
+    css`
+      :host {
       display: block;
-    }
+      }
 
-    .editor {
-      display: grid;
-      gap: 1rem;
-      padding: 0.25rem 0;
-    }
+      .editor {
+        display: grid;
+        gap: 1rem;
+        padding: 0.25rem 0;
+      }
 
     .section {
       display: grid;
@@ -278,22 +281,22 @@ ${selectedEntities.join("\n")}</textarea
       font-weight: 600;
     }
 
-    small {
-      color: #5f6b6a;
-      font-size: 0.78rem;
-    }
+      small {
+        color: var(--li-muted);
+        font-size: 0.78rem;
+      }
 
-    input,
-    textarea {
-      box-sizing: border-box;
-      width: 100%;
-      padding: 0.75rem 0.9rem;
-      border: 1px solid rgba(127, 127, 127, 0.35);
-      border-radius: 10px;
-      font: inherit;
-      color: inherit;
-      background: rgba(255, 255, 255, 0.85);
-    }
+      input,
+      textarea {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0.75rem 0.9rem;
+        border: 1px solid var(--li-border);
+        border-radius: 10px;
+        font: inherit;
+        color: inherit;
+        background: var(--li-editor-input-bg);
+      }
 
     textarea {
       min-height: 7rem;
@@ -306,18 +309,18 @@ ${selectedEntities.join("\n")}</textarea
       gap: 0.5rem;
     }
 
-    .entityChip {
-      display: grid;
-      gap: 0.1rem;
-      text-align: left;
-      padding: 0.65rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid rgba(40, 76, 63, 0.16);
-      background: rgba(255, 255, 255, 0.7);
-      color: inherit;
-      cursor: pointer;
-      font: inherit;
-    }
+      .entityChip {
+        display: grid;
+        gap: 0.1rem;
+        text-align: left;
+        padding: 0.65rem 0.8rem;
+        border-radius: 999px;
+        border: 1px solid var(--li-border);
+        background: var(--li-editor-chip-bg);
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+      }
 
     .entityChip strong {
       font-size: 0.84rem;
@@ -328,17 +331,18 @@ ${selectedEntities.join("\n")}</textarea
       line-height: 1.2;
     }
 
-    .entityChip.active {
-      background: rgba(40, 76, 63, 0.08);
-      border-color: rgba(40, 76, 63, 0.28);
-    }
+      .entityChip.active {
+        background: var(--li-editor-chip-active);
+        border-color: color-mix(in srgb, var(--li-accent-soft) 32%, transparent);
+      }
 
-    .hint {
-      margin: 0;
-      color: #5f6b6a;
-      font-size: 0.85rem;
-    }
-  `;
+      .hint {
+        margin: 0;
+        color: var(--li-muted);
+        font-size: 0.85rem;
+      }
+    `
+  ];
 }
 
 declare global {

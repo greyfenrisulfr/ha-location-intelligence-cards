@@ -1,6 +1,7 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { confidenceTone, formatConfidence } from "../utils/location";
+import { cardStyles } from "../styles/tokens";
 
 @customElement("li-confidence-chip")
 export class LiConfidenceChip extends LitElement {
@@ -12,8 +13,10 @@ export class LiConfidenceChip extends LitElement {
     </span>`;
   }
 
-  static styles = css`
-    .chip {
+  static styles = [
+    cardStyles,
+    css`
+      .chip {
       display: inline-flex;
       align-items: center;
       padding: 0.35rem 0.7rem;
@@ -23,29 +26,29 @@ export class LiConfidenceChip extends LitElement {
       font-weight: 700;
     }
 
-    .high {
-      background: rgba(92, 137, 104, 0.16);
-      color: #234a2f;
-      border-color: rgba(92, 137, 104, 0.22);
-    }
+      .high {
+        background: color-mix(in srgb, var(--li-accent-soft) 20%, transparent);
+        color: color-mix(in srgb, var(--li-accent-soft) 38%, var(--li-text));
+        border-color: color-mix(in srgb, var(--li-accent-soft) 28%, transparent);
+      }
 
-    .medium {
-      background: rgba(165, 101, 42, 0.14);
-      color: #7b4d1f;
-      border-color: rgba(165, 101, 42, 0.24);
-    }
+      .medium {
+        background: color-mix(in srgb, var(--li-warn) 18%, transparent);
+        color: color-mix(in srgb, var(--li-warn) 42%, var(--li-text));
+        border-color: color-mix(in srgb, var(--li-warn) 26%, transparent);
+      }
 
-    .low {
-      background: rgba(163, 71, 60, 0.14);
-      color: #7d2f2a;
-      border-color: rgba(163, 71, 60, 0.24);
-    }
+      .low {
+        background: color-mix(in srgb, var(--li-low) 18%, transparent);
+        color: color-mix(in srgb, var(--li-low) 46%, var(--li-text));
+        border-color: color-mix(in srgb, var(--li-low) 26%, transparent);
+      }
 
-    .unknown {
-      background: rgba(85, 101, 100, 0.14);
-      color: #475655;
-      border-color: rgba(85, 101, 100, 0.24);
-    }
-  `;
+      .unknown {
+        background: color-mix(in srgb, var(--li-muted) 16%, transparent);
+        color: var(--li-muted);
+        border-color: color-mix(in srgb, var(--li-muted) 24%, transparent);
+      }
+    `
+  ];
 }
-

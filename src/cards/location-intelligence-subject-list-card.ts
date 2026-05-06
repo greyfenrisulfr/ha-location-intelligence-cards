@@ -162,7 +162,7 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
       .summary span {
         padding: 0.28rem 0.55rem;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.65);
+        background: var(--li-surface);
         border: 1px solid var(--li-border);
       }
 
