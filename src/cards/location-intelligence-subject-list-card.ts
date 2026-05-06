@@ -1,8 +1,9 @@
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import "../components/location-intelligence-card-editor";
 import "../components/li-confidence-chip";
 import { cardStyles } from "../styles/tokens";
-import type { HomeAssistant, LovelaceCard } from "../types/home-assistant";
+import type { HomeAssistant, LovelaceCard, LovelaceCardEditor } from "../types/home-assistant";
 import type { LocationIntelligenceCardConfig } from "../types/location";
 import {
   bearingToDirection,
@@ -28,6 +29,23 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
     return Math.max(3, this.config?.entities?.length ?? 3);
   }
 
+  public static async getConfigElement(): Promise<LovelaceCardEditor> {
+    const editor = document.createElement("location-intelligence-card-editor") as LovelaceCardEditor &
+      {
+        mode: "single" | "multiple";
+      };
+    editor.mode = "multiple";
+    return editor;
+  }
+
+  public static getStubConfig(): LocationIntelligenceCardConfig {
+    return {
+      type: "custom:location-intelligence-subject-list-card",
+      title: "Location overview",
+      entities: ["sensor.location_intelligence"]
+    };
+  }
+
   protected render() {
     const entities = (this.config?.entities ?? [])
       .map((entityId) => this.hass?.states[entityId])
@@ -45,27 +63,29 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
           </div>
 
           <div class="list">
-            ${entities.map(
-              (snapshot) => html`
-                <div class="row panel">
-                  <div class="identity">
-                    <strong>${snapshot.name}</strong>
-                    <span>${snapshot.subjectType}</span>
-                  </div>
+            ${entities.length > 0
+              ? entities.map(
+                  (snapshot) => html`
+                    <div class="row panel">
+                      <div class="identity">
+                        <strong>${snapshot.name}</strong>
+                        <span>${snapshot.subjectType}</span>
+                      </div>
 
-                  <div class="summary">
-                    <span>${formatDistance(snapshot.distanceM)}</span>
-                    <span>${bearingToDirection(snapshot.bearingDeg)}</span>
-                    <span>${snapshot.likelyLocation ?? "Location unknown"}</span>
-                  </div>
+                      <div class="summary">
+                        <span>${formatDistance(snapshot.distanceM)}</span>
+                        <span>${bearingToDirection(snapshot.bearingDeg)}</span>
+                        <span>${snapshot.likelyLocation ?? "Location unknown"}</span>
+                      </div>
 
-                  <div class="meta">
-                    <li-confidence-chip .confidence=${snapshot.confidence}></li-confidence-chip>
-                    <span class="stamp">${formatUpdated(snapshot.lastReported)}</span>
-                  </div>
-                </div>
-              `
-            )}
+                      <div class="meta">
+                        <li-confidence-chip .confidence=${snapshot.confidence}></li-confidence-chip>
+                        <span class="stamp">${formatUpdated(snapshot.lastReported)}</span>
+                      </div>
+                    </div>
+                  `
+                )
+              : html`<div class="empty panel">No configured entities are currently available.</div>`}
           </div>
         </div>
       </ha-card>
@@ -129,6 +149,11 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
         gap: 0.7rem;
       }
 
+      .empty {
+        padding: 1rem;
+        color: var(--li-muted);
+      }
+
       @media (max-width: 760px) {
         .row {
           grid-template-columns: 1fr;
@@ -147,4 +172,3 @@ declare global {
     "location-intelligence-subject-list-card": LocationIntelligenceSubjectListCard;
   }
 }
-

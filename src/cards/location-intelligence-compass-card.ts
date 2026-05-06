@@ -1,9 +1,10 @@
 import { LitElement, css, html, nothing } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import "../components/location-intelligence-card-editor";
 import "../components/li-confidence-chip";
 import "../components/li-direction-ring";
 import { cardStyles } from "../styles/tokens";
-import type { HomeAssistant, LovelaceCard } from "../types/home-assistant";
+import type { HomeAssistant, LovelaceCard, LovelaceCardEditor } from "../types/home-assistant";
 import type { LocationIntelligenceCardConfig } from "../types/location";
 import {
   bearingToDirection,
@@ -28,6 +29,22 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
 
   public getCardSize(): number {
     return 5;
+  }
+
+  public static async getConfigElement(): Promise<LovelaceCardEditor> {
+    const editor = document.createElement("location-intelligence-card-editor") as LovelaceCardEditor &
+      {
+        mode: "single" | "multiple";
+      };
+    editor.mode = "single";
+    return editor;
+  }
+
+  public static getStubConfig(): LocationIntelligenceCardConfig {
+    return {
+      type: "custom:location-intelligence-compass-card",
+      entity: "sensor.location_intelligence"
+    };
   }
 
   protected render() {
@@ -180,4 +197,3 @@ declare global {
     "location-intelligence-compass-card": LocationIntelligenceCompassCard;
   }
 }
-

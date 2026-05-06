@@ -8,6 +8,32 @@ Frontend-only Lovelace scaffolding for conservative, explainable spatial awarene
 - `location-intelligence-subject-list-card`
 - `location-intelligence-dashboard-card`
 
+## Roadmap
+
+### Phase 1: baseline card package
+
+- Ship the three Lovelace cards with stable entity parsing and conservative formatting.
+- Support Home Assistant card discovery, previews, stub configs, and a basic visual editor.
+- Keep the frontend independent from the backend integration so entity attributes can evolve safely.
+
+### Phase 2: richer situational awareness
+
+- Add status states such as moving, stationary, stale, and offline.
+- Show relative freshness and stale-data warnings instead of only raw timestamps.
+- Introduce optional grouping by people, pets, vehicles, and assets.
+
+### Phase 3: map and relationship views
+
+- Replace the dashboard placeholder with a real fused-position map surface.
+- Add leader/follower, nearest-subject, and zone-proximity summaries.
+- Support short movement trails when the backend starts exposing history-friendly attributes.
+
+### Phase 4: polish and release readiness
+
+- Add screenshots and example dashboards.
+- Expand compatibility testing across phone and tablet layouts.
+- Publish release notes and HACS-oriented installation guidance.
+
 ## Design goals
 
 - Show probable location, direction, distance, and confidence.
@@ -70,3 +96,5 @@ npm run build
 ```
 
 Load `dist/location-intelligence.js` as a Lovelace resource.
+
+The current baseline also exposes Home Assistant custom-card metadata and a basic config editor for manual setup in the UI.
