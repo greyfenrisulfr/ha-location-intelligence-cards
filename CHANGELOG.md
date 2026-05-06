@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3 - 2026-05-06
+
+- Clarified HACS installation in the README with explicit custom-repository steps.
+- Added the expected `/hacsfiles/ha-location-intelligence-cards/ha-location-intelligence-cards.js` resource path as a fallback when Home Assistant does not auto-register the card.
+
 ## 0.2.2 - 2026-05-06
 
 - Added compatibility with the current `greyfenrisulfr/location_intelligence` backend subject sensor attributes.

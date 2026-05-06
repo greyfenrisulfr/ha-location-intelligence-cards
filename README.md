@@ -100,6 +100,30 @@ entities:
   - sensor.bag_status
 ```
 
+## Installation
+
+### HACS
+
+1. Open HACS in Home Assistant.
+2. Add this repository as a custom repository:
+   - Repository: `https://github.com/greyfenrisulfr/ha-location-intelligence-cards`
+   - Category: `Dashboard`
+3. Find **Home Assistant Location Intelligence Cards** in HACS and install it.
+4. Restart Home Assistant.
+5. Open any dashboard and add one of the custom cards:
+   - `custom:location-intelligence-compass-card`
+   - `custom:location-intelligence-subject-list-card`
+   - `custom:location-intelligence-dashboard-card`
+
+HACS should register the frontend resource automatically. If the card does not appear after installation, add this resource manually in **Settings -> Dashboards -> Resources**:
+
+- URL: `/hacsfiles/ha-location-intelligence-cards/ha-location-intelligence-cards.js`
+- Type: `module`
+
+### Manual
+
+Build the project and load the generated bundle as a Lovelace resource.
+
 ## Development
 
 ```bash
@@ -108,6 +132,6 @@ npm run check
 npm run build
 ```
 
-Load `dist/ha-location-intelligence-cards.js` as a Lovelace resource.
+Then add `dist/ha-location-intelligence-cards.js` as a Lovelace resource.
 
 The current baseline also exposes Home Assistant custom-card metadata and a basic config editor for manual setup in the UI.
