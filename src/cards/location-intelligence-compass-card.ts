@@ -7,9 +7,9 @@ import { cardStyles } from "../styles/tokens";
 import type { HomeAssistant, LovelaceCard, LovelaceCardEditor } from "../types/home-assistant";
 import type { LocationIntelligenceCardConfig } from "../types/location";
 import {
-  bearingToDirection,
   entityToSnapshot,
   formatAccuracy,
+  formatDirection,
   formatDistance,
   formatLocationSummary,
   formatUpdated
@@ -61,7 +61,7 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
         <div class="card">
           <div class="header">
             <div>
-              <div class="eyebrow">${snapshot.subjectType}</div>
+              <div class="eyebrow">${snapshot.subjectTypeLabel}</div>
               <h2>${this.config?.name ?? snapshot.name}</h2>
               <p>${formatLocationSummary(snapshot)}</p>
             </div>
@@ -77,7 +77,7 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
             <div class="metrics">
               <div class="metric">
                 <span class="label">Direction</span>
-                <strong>${bearingToDirection(snapshot.bearingDeg)}</strong>
+                <strong>${formatDirection(snapshot)}</strong>
               </div>
               <div class="metric">
                 <span class="label">Distance</span>
@@ -97,7 +97,9 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
           <div class="footer">
             <span class="chip">Updated ${formatUpdated(snapshot.lastReported)}</span>
             <span class="chip">${formatAccuracy(snapshot.accuracyM)}</span>
-            ${snapshot.state ? html`<span class="chip">State ${snapshot.state}</span>` : nothing}
+            ${snapshot.state
+              ? html`<span class="chip">${snapshot.isAvailable ? "State" : "Availability"} ${snapshot.stateLabel}</span>`
+              : nothing}
           </div>
         </div>
       </ha-card>

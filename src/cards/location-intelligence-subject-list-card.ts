@@ -6,10 +6,11 @@ import { cardStyles } from "../styles/tokens";
 import type { HomeAssistant, LovelaceCard, LovelaceCardEditor } from "../types/home-assistant";
 import type { LocationIntelligenceCardConfig } from "../types/location";
 import {
-  bearingToDirection,
   entityToSnapshot,
+  formatDirection,
   formatDistance,
-  formatUpdated
+  formatUpdated,
+  sortSnapshots
 } from "../utils/location";
 
 @customElement("location-intelligence-subject-list-card")
@@ -47,10 +48,14 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
   }
 
   protected render() {
-    const entities = (this.config?.entities ?? [])
+    const configuredCount = this.config?.entities?.length ?? 0;
+    const entities = sortSnapshots(
+      (this.config?.entities ?? [])
       .map((entityId) => this.hass?.states[entityId])
       .filter((entity): entity is NonNullable<typeof entity> => Boolean(entity))
-      .map(entityToSnapshot);
+      .map(entityToSnapshot)
+    );
+    const missingCount = Math.max(0, configuredCount - entities.length);
 
     return html`
       <ha-card>
@@ -60,7 +65,12 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
               <div class="eyebrow">Subjects</div>
               <h2>${this.config?.title ?? "Location overview"}</h2>
             </div>
+            <span class="count chip">${entities.length} active</span>
           </div>
+
+          ${missingCount > 0
+            ? html`<p class="notice">${missingCount} configured ${missingCount === 1 ? "entity is" : "entities are"} currently unavailable.</p>`
+            : ""}
 
           <div class="list">
             ${entities.length > 0
@@ -69,12 +79,12 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
                     <div class="row panel">
                       <div class="identity">
                         <strong>${snapshot.name}</strong>
-                        <span>${snapshot.subjectType}</span>
+                        <span>${snapshot.subjectTypeLabel}</span>
                       </div>
 
                       <div class="summary">
                         <span>${formatDistance(snapshot.distanceM)}</span>
-                        <span>${bearingToDirection(snapshot.bearingDeg)}</span>
+                        <span>${formatDirection(snapshot)}</span>
                         <span>${snapshot.likelyLocation ?? snapshot.referencePlaceName ?? "Location unknown"}</span>
                       </div>
 
@@ -102,6 +112,19 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
       h2 {
         margin: 0.25rem 0 0;
         font-size: 1.5rem;
+      }
+
+      .titleRow {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .notice {
+        margin: 0.75rem 0 0;
+        color: var(--li-muted);
+        font-size: 0.88rem;
       }
 
       .list {

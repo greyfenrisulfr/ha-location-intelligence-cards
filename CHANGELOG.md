@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 - 2026-05-06
+
+- Completed the Phase 1 baseline package and marked it as such in the README.
+- Replaced the dashboard placeholder with a real frontend-only overview including focus detail, relative plot, and subject roster.
+- Hardened shared entity parsing and conservative formatting so the cards tolerate partial or evolving backend attributes more consistently.
+- Upgraded the built-in card editor with detected entity suggestions, multi-entity management, and better focus-entity setup.
+
 ## 0.2.3 - 2026-05-06
 
 - Clarified HACS installation in the README with explicit custom-repository steps.

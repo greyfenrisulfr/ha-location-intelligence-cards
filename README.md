@@ -8,9 +8,16 @@ Frontend-only Lovelace scaffolding for conservative, explainable spatial awarene
 - `location-intelligence-subject-list-card`
 - `location-intelligence-dashboard-card`
 
+## Current baseline
+
+- Stable frontend parsing for both placeholder attributes and the current backend subject sensor fields.
+- Conservative distance, direction, confidence, accuracy, and timestamp formatting with graceful fallbacks for partial entities.
+- Home Assistant custom-card discovery metadata, preview support, stub configs, and a basic built-in visual editor.
+- A dashboard overview with focus detail, multi-subject roster, and a frontend-only relative bearing and distance plot.
+
 ## Roadmap
 
-### Phase 1: baseline card package
+### Phase 1: baseline card package completed
 
 - Ship the three Lovelace cards with stable entity parsing and conservative formatting.
 - Support Home Assistant card discovery, previews, stub configs, and a basic visual editor.
@@ -24,7 +31,7 @@ Frontend-only Lovelace scaffolding for conservative, explainable spatial awarene
 
 ### Phase 3: map and relationship views
 
-- Replace the dashboard placeholder with a real fused-position map surface.
+- Add a real fused-position map surface alongside the current relative overview plot.
 - Add leader/follower, nearest-subject, and zone-proximity summaries.
 - Support short movement trails when the backend starts exposing history-friendly attributes.
 

@@ -12,6 +12,8 @@ const DIRECTIONS = [
   "NW"
 ];
 
+const UNAVAILABLE_STATES = new Set(["unknown", "unavailable", "none"]);
+
 const numberOrUndefined = (value: unknown): number | undefined => {
   if (typeof value === "number" && Number.isFinite(value)) {
     return value;
@@ -34,6 +36,28 @@ const stringOrUndefined = (value: unknown): string | undefined => {
   return trimmed === "" ? undefined : trimmed;
 };
 
+const firstNumber = (attributes: Record<string, unknown>, keys: string[]): number | undefined => {
+  for (const key of keys) {
+    const value = numberOrUndefined(attributes[key]);
+    if (value !== undefined) {
+      return value;
+    }
+  }
+
+  return undefined;
+};
+
+const firstString = (attributes: Record<string, unknown>, keys: string[]): string | undefined => {
+  for (const key of keys) {
+    const value = stringOrUndefined(attributes[key]);
+    if (value !== undefined) {
+      return value;
+    }
+  }
+
+  return undefined;
+};
+
 const prettifyName = (value: string): string =>
   value
     .replace(/^sensor\./, "")
@@ -43,6 +67,49 @@ const prettifyName = (value: string): string =>
 const titleCase = (value: string): string =>
   value.replace(/\b\w/g, (match) => match.toUpperCase());
 
+const normalizeConfidence = (value?: number): number | undefined => {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (value > 1 && value <= 100) {
+    return value / 100;
+  }
+
+  if (value < 0 || value > 1) {
+    return undefined;
+  }
+
+  return value;
+};
+
+const prettifyLabel = (value: string): string =>
+  titleCase(value.replace(/[_-]/g, " "));
+
+const normalizeStateLabel = (state: string): string => {
+  if (state.trim() === "") {
+    return "Unknown";
+  }
+
+  return prettifyLabel(state);
+};
+
+const normalizeSubjectType = (entity: HassEntity): string => {
+  const explicit =
+    firstString(entity.attributes, ["subject_type", "reference_place_kind"]) ??
+    entity.entity_id.split(".")[0];
+
+  return explicit.toLowerCase();
+};
+
+const subjectTypeLabel = (subjectType: string): string => {
+  if (subjectType === "device_tracker") {
+    return "Device tracker";
+  }
+
+  return prettifyLabel(subjectType);
+};
+
 const sourceCountLabel = (count?: number): string | undefined => {
   if (count === undefined) {
     return undefined;
@@ -51,52 +118,67 @@ const sourceCountLabel = (count?: number): string | undefined => {
   return `${count} source${count === 1 ? "" : "s"}`;
 };
 
-export const entityToSnapshot = (entity: HassEntity): LocationSnapshot => ({
-  subjectId: stringOrUndefined(entity.attributes.subject_id),
-  entityId: entity.entity_id,
-  name: titleCase(
-    prettifyName(
-      String(
-        entity.attributes.friendly_name ??
-          stringOrUndefined(entity.attributes.subject_id) ??
-          entity.entity_id
+export const entityToSnapshot = (entity: HassEntity): LocationSnapshot => {
+  const subjectType = normalizeSubjectType(entity);
+  const state = String(entity.state ?? "");
+  const directionLabel =
+    firstString(entity.attributes, ["direction", "direction_from_reference", "direction_from_home"]) ??
+    undefined;
+  const confidence = normalizeConfidence(numberOrUndefined(entity.attributes.confidence));
+
+  return {
+    subjectId: stringOrUndefined(entity.attributes.subject_id),
+    entityId: entity.entity_id,
+    name: titleCase(
+      prettifyName(
+        String(
+          entity.attributes.friendly_name ??
+            stringOrUndefined(entity.attributes.subject_id) ??
+            entity.entity_id
+        )
       )
-    )
-  ),
-  subjectType: String(entity.attributes.subject_type ?? "subject"),
-  likelyLocation:
-    stringOrUndefined(entity.attributes.likely_location) ??
-    stringOrUndefined(entity.attributes.reference_place_name),
-  distanceM:
-    numberOrUndefined(entity.attributes.distance_m) ??
-    numberOrUndefined(entity.attributes.distance_from_reference_m) ??
-    numberOrUndefined(entity.attributes.distance_from_home_m),
-  bearingDeg:
-    numberOrUndefined(entity.attributes.bearing_deg) ??
-    numberOrUndefined(entity.attributes.bearing_from_reference_deg) ??
-    numberOrUndefined(entity.attributes.bearing_from_home_deg),
-  confidence: numberOrUndefined(entity.attributes.confidence),
-  confidenceLabel: stringOrUndefined(entity.attributes.confidence_label),
-  sourceLabel:
-    stringOrUndefined(entity.attributes.source_label) ??
-    sourceCountLabel(numberOrUndefined(entity.attributes.source_count)),
-  sourceCount: numberOrUndefined(entity.attributes.source_count),
-  accuracyM: numberOrUndefined(entity.attributes.accuracy_m),
-  latitude: numberOrUndefined(entity.attributes.latitude),
-  longitude: numberOrUndefined(entity.attributes.longitude),
-  referencePlaceName: stringOrUndefined(entity.attributes.reference_place_name),
-  referencePlaceKind: stringOrUndefined(entity.attributes.reference_place_kind),
-  state: entity.state,
-  lastReported:
-    stringOrUndefined(entity.attributes.last_reported) ??
-    stringOrUndefined(entity.attributes.observed_at) ??
-    (typeof entity.attributes.last_reported === "string"
-      ? entity.attributes.last_reported
-      : entity.last_updated
-        ? entity.last_updated
-        : undefined),
-  raw: entity
-});
+    ),
+    subjectType,
+    subjectTypeLabel: subjectTypeLabel(subjectType),
+    likelyLocation:
+      firstString(entity.attributes, [
+        "likely_location",
+        "reference_place_name",
+        "geocoded_place_name",
+        "place_name"
+      ]) ?? (!UNAVAILABLE_STATES.has(state.toLowerCase()) ? state : undefined),
+    distanceM: firstNumber(entity.attributes, [
+      "distance_m",
+      "distance_from_reference_m",
+      "distance_from_home_m"
+    ]),
+    bearingDeg: firstNumber(entity.attributes, [
+      "bearing_deg",
+      "bearing_from_reference_deg",
+      "bearing_from_home_deg"
+    ]),
+    directionLabel,
+    confidence,
+    confidenceLabel: firstString(entity.attributes, ["confidence_label"]),
+    sourceLabel:
+      firstString(entity.attributes, ["source_label", "source_name"]) ??
+      sourceCountLabel(numberOrUndefined(entity.attributes.source_count)),
+    sourceCount: numberOrUndefined(entity.attributes.source_count),
+    accuracyM: firstNumber(entity.attributes, ["accuracy_m", "gps_accuracy", "horizontal_accuracy"]),
+    latitude: numberOrUndefined(entity.attributes.latitude),
+    longitude: numberOrUndefined(entity.attributes.longitude),
+    referencePlaceName: firstString(entity.attributes, ["reference_place_name", "place_name"]),
+    referencePlaceKind: firstString(entity.attributes, ["reference_place_kind"]),
+    state,
+    stateLabel: normalizeStateLabel(state),
+    isAvailable: !UNAVAILABLE_STATES.has(state.toLowerCase()),
+    lastReported:
+      firstString(entity.attributes, ["last_reported", "observed_at", "timestamp"]) ??
+      entity.last_updated ??
+      entity.last_changed,
+    raw: entity
+  };
+};
 
 export const bearingToDirection = (bearing?: number): string => {
   if (bearing === undefined) {
@@ -170,6 +252,14 @@ export const formatLocationSummary = (snapshot: LocationSnapshot): string => {
   return "Probable location unknown";
 };
 
+export const formatDirection = (snapshot: LocationSnapshot): string => {
+  if (snapshot.directionLabel) {
+    return prettifyLabel(snapshot.directionLabel);
+  }
+
+  return bearingToDirection(snapshot.bearingDeg);
+};
+
 export const formatAccuracy = (accuracyM?: number): string => {
   if (accuracyM === undefined) {
     return "Accuracy unknown";
@@ -203,3 +293,20 @@ export const formatUpdated = (value?: string): string => {
     minute: "2-digit"
   });
 };
+
+export const sortSnapshots = (snapshots: LocationSnapshot[]): LocationSnapshot[] =>
+  [...snapshots].sort((left, right) => {
+    if (left.isAvailable !== right.isAvailable) {
+      return Number(right.isAvailable) - Number(left.isAvailable);
+    }
+
+    if (left.distanceM !== undefined && right.distanceM !== undefined && left.distanceM !== right.distanceM) {
+      return left.distanceM - right.distanceM;
+    }
+
+    if (left.confidence !== undefined && right.confidence !== undefined && left.confidence !== right.confidence) {
+      return right.confidence - left.confidence;
+    }
+
+    return left.name.localeCompare(right.name);
+  });

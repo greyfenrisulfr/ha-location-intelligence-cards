@@ -14,9 +14,11 @@ export interface LocationSnapshot {
   subjectId?: string;
   name: string;
   subjectType: string;
+  subjectTypeLabel: string;
   likelyLocation?: string;
   distanceM?: number;
   bearingDeg?: number;
+  directionLabel?: string;
   confidence?: number;
   confidenceLabel?: string;
   sourceLabel?: string;
@@ -27,6 +29,8 @@ export interface LocationSnapshot {
   referencePlaceName?: string;
   referencePlaceKind?: string;
   state: string;
+  stateLabel: string;
+  isAvailable: boolean;
   lastReported?: string;
   raw: HassEntity;
 }
