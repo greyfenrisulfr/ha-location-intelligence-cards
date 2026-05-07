@@ -27,14 +27,13 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
   }
 
   public getCardSize(): number {
-    return Math.max(3, this.config?.entities?.length ?? 3);
+    return Math.max(4, this.config?.entities?.length ?? 4);
   }
 
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
-    const editor = document.createElement("location-intelligence-card-editor") as LovelaceCardEditor &
-      {
-        mode: "single" | "multiple";
-      };
+    const editor = document.createElement("location-intelligence-card-editor") as LovelaceCardEditor & {
+      mode: "single" | "multiple";
+    };
     editor.mode = "multiple";
     return editor;
   }
@@ -51,48 +50,64 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
     const configuredCount = this.config?.entities?.length ?? 0;
     const entities = sortSnapshots(
       (this.config?.entities ?? [])
-      .map((entityId) => this.hass?.states[entityId])
-      .filter((entity): entity is NonNullable<typeof entity> => Boolean(entity))
-      .map(entityToSnapshot)
+        .map((entityId) => this.hass?.states[entityId])
+        .filter((entity): entity is NonNullable<typeof entity> => Boolean(entity))
+        .map(entityToSnapshot)
     );
     const missingCount = Math.max(0, configuredCount - entities.length);
 
     return html`
       <ha-card>
         <div class="card">
-          <div class="titleRow">
+          <div class="header">
             <div>
-              <div class="eyebrow">Subjects</div>
+              <div class="eyebrow">Overview</div>
               <h2>${this.config?.title ?? "Location overview"}</h2>
             </div>
-            <span class="count chip">${entities.length} active</span>
+            <div class="headerMeta">
+              <span class="miniTab miniTabActive">Tracked</span>
+              <span class="chip">${entities.length} active</span>
+            </div>
           </div>
 
           ${missingCount > 0
             ? html`<p class="notice">${missingCount} configured ${missingCount === 1 ? "entity is" : "entities are"} currently unavailable.</p>`
             : ""}
 
-          <div class="list">
+          <div class="table">
+            <div class="tableHead">
+              <span>Subject</span>
+              <span>Distance</span>
+              <span>Direction</span>
+              <span>Location</span>
+              <span>Updated</span>
+            </div>
+
             ${entities.length > 0
               ? entities.map(
                   (snapshot) => html`
-                    <div class="row panel">
-                      <div class="identity">
-                        <strong>${snapshot.name}</strong>
-                        <span>${snapshot.subjectTypeLabel}</span>
+                    <article class="row panel">
+                      <div class="subject">
+                        <span class="avatar">${snapshot.name.slice(0, 1).toUpperCase()}</span>
+                        <div>
+                          <strong>${snapshot.name}</strong>
+                          <small>${snapshot.subjectTypeLabel}</small>
+                        </div>
                       </div>
-
-                      <div class="summary">
-                        <span>${formatDistance(snapshot.distanceM)}</span>
-                        <span>${formatDirection(snapshot)}</span>
+                      <div class="value">
+                        <strong>${formatDistance(snapshot.distanceM)}</strong>
+                      </div>
+                      <div class="value">
+                        <strong>${formatDirection(snapshot)}</strong>
+                      </div>
+                      <div class="locationCell">
                         <span>${snapshot.likelyLocation ?? snapshot.referencePlaceName ?? "Location unknown"}</span>
-                      </div>
-
-                      <div class="meta">
                         <li-confidence-chip .confidence=${snapshot.confidence}></li-confidence-chip>
-                        <span class="stamp">${formatUpdated(snapshot.lastReported)}</span>
                       </div>
-                    </div>
+                      <div class="value">
+                        <strong>${formatUpdated(snapshot.lastReported)}</strong>
+                      </div>
+                    </article>
                   `
                 )
               : html`<div class="empty panel">No configured entities are currently available.</div>`}
@@ -106,84 +121,115 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
     cardStyles,
     css`
       .card {
-        padding: 1.25rem;
+        padding: 1.1rem;
+      }
+
+      .header,
+      .headerMeta,
+      .subject,
+      .locationCell {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      .header {
+        justify-content: space-between;
       }
 
       h2 {
         margin: 0.25rem 0 0;
-        font-size: 1.5rem;
+        font-size: 1.35rem;
       }
 
-      .titleRow {
-        display: flex;
-        align-items: start;
-        justify-content: space-between;
-        gap: 1rem;
+      .miniTab {
+        padding: 0.42rem 0.78rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        background: rgba(13, 20, 28, 0.88);
+        border: 1px solid var(--li-border);
+        color: var(--li-muted);
+      }
+
+      .miniTabActive {
+        color: var(--li-accent-soft);
+        background: rgba(26, 214, 107, 0.14);
+      }
+
+      .notice,
+      .tableHead span,
+      small,
+      .locationCell span {
+        color: var(--li-muted);
       }
 
       .notice {
-        margin: 0.75rem 0 0;
-        color: var(--li-muted);
+        margin: 0.7rem 0 0;
         font-size: 0.88rem;
       }
 
-      .list {
-        display: grid;
-        gap: 0.8rem;
+      .table {
         margin-top: 1rem;
       }
 
+      .tableHead,
       .row {
-        padding: 0.9rem 1rem;
         display: grid;
-        grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) auto;
-        gap: 0.9rem;
+        grid-template-columns: 1.35fr 0.9fr 0.8fr 1.4fr 0.95fr;
+        gap: 0.8rem;
         align-items: center;
       }
 
-      .identity strong {
+      .tableHead {
+        padding: 0 0.45rem 0.55rem;
+        font-size: 0.78rem;
+      }
+
+      .row {
+        padding: 0.85rem 1rem;
+      }
+
+      .row + .row {
+        margin-top: 0.5rem;
+      }
+
+      .avatar {
+        width: 2rem;
+        height: 2rem;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background: linear-gradient(180deg, rgba(255, 193, 114, 0.24), rgba(74, 168, 255, 0.2));
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        font-weight: 800;
+      }
+
+      strong {
         display: block;
-        font-size: 1rem;
       }
 
-      .identity span,
-      .summary span,
-      .stamp {
-        color: var(--li-muted);
-        font-size: 0.86rem;
-      }
-
-      .summary {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.6rem;
-      }
-
-      .summary span {
-        padding: 0.28rem 0.55rem;
-        border-radius: 999px;
-        background: var(--li-surface);
-        border: 1px solid var(--li-border);
-      }
-
-      .meta {
-        display: flex;
-        align-items: center;
-        gap: 0.7rem;
+      .locationCell {
+        justify-content: space-between;
       }
 
       .empty {
         padding: 1rem;
-        color: var(--li-muted);
       }
 
-      @media (max-width: 760px) {
+      @media (max-width: 860px) {
+        .header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .tableHead,
         .row {
           grid-template-columns: 1fr;
         }
 
-        .meta {
-          justify-content: space-between;
+        .locationCell {
+          flex-direction: column;
+          align-items: flex-start;
         }
       }
     `

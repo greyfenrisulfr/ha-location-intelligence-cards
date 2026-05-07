@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 - 2026-05-07
+
+- Redesigned the cards toward a darker, app-like location intelligence UI with denser panels, stronger hierarchy, and map-style visual treatment.
+- Rebuilt the dashboard into a more productized operations layout with a live relative-view stage, detail rail, and tracked-subject table.
+- Restyled the compass and subject list cards to align with the new visual language and upgraded the direction ring to feel closer to the reference radar aesthetic.
+
 ## 0.3.2 - 2026-05-06
 
 - Added dark mode support across the cards, shared tokens, and built-in editor using Home Assistant theme-aware surfaces and text colors.
