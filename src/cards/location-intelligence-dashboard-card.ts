@@ -320,7 +320,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         height: 1rem;
         border-radius: 50%;
         background: radial-gradient(circle at 35% 35%, var(--li-accent-soft), var(--li-accent));
-        box-shadow: 0 0 18px rgba(26, 214, 107, 0.34);
+        box-shadow: 0 0 18px color-mix(in srgb, var(--li-accent) 34%, transparent);
       }
 
       .toolbarRight {
@@ -335,7 +335,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         gap: 0.4rem;
         padding: 0.24rem;
         border-radius: 999px;
-        background: rgba(13, 20, 28, 0.88);
+        background: var(--li-surface-muted);
         border: 1px solid var(--li-border);
       }
 
@@ -349,7 +349,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
 
       .navTabActive,
       .miniTabActive {
-        background: rgba(26, 214, 107, 0.16);
+        background: color-mix(in srgb, var(--li-accent) 16%, transparent);
         color: var(--li-accent-soft);
       }
 
@@ -386,12 +386,12 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         border-radius: 24px;
         overflow: hidden;
         background:
-          radial-gradient(circle at center, rgba(31, 95, 255, 0.2) 0, rgba(31, 95, 255, 0) 12%),
-          radial-gradient(circle at 35% 72%, rgba(26, 214, 107, 0.1), transparent 26%),
-          linear-gradient(180deg, rgba(11, 19, 30, 0.92), rgba(10, 16, 24, 0.98)),
+          radial-gradient(circle at center, color-mix(in srgb, var(--li-info) 22%, transparent) 0, transparent 12%),
+          radial-gradient(circle at 35% 72%, color-mix(in srgb, var(--li-accent) 12%, transparent), transparent 26%),
+          linear-gradient(180deg, color-mix(in srgb, var(--li-surface-muted) 90%, #081018), color-mix(in srgb, var(--li-panel) 92%, #071018)),
           var(--li-grid);
         background-size: auto, auto, auto, 1.4rem 1.4rem;
-        border: 1px solid rgba(74, 168, 255, 0.14);
+        border: 1px solid color-mix(in srgb, var(--li-info) 16%, var(--li-border));
       }
 
       .mapCanvas::before,
@@ -403,14 +403,14 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
 
       .mapCanvas::before {
         background:
-          linear-gradient(135deg, transparent 44%, rgba(74, 168, 255, 0.08) 45%, transparent 46%),
-          linear-gradient(25deg, transparent 54%, rgba(26, 214, 107, 0.06) 55%, transparent 56%);
+          linear-gradient(135deg, transparent 44%, color-mix(in srgb, var(--li-info) 10%, transparent) 45%, transparent 46%),
+          linear-gradient(25deg, transparent 54%, color-mix(in srgb, var(--li-accent) 8%, transparent) 55%, transparent 56%);
       }
 
       .mapCanvas::after {
         background:
-          radial-gradient(circle at 20% 28%, rgba(74, 168, 255, 0.18), transparent 18%),
-          radial-gradient(circle at 77% 70%, rgba(165, 109, 255, 0.1), transparent 16%);
+          radial-gradient(circle at 20% 28%, color-mix(in srgb, var(--li-info) 22%, transparent), transparent 18%),
+          radial-gradient(circle at 77% 70%, color-mix(in srgb, var(--li-warn) 10%, transparent), transparent 16%);
         pointer-events: none;
       }
 
@@ -425,7 +425,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
       .mapGlow {
         inset: 34%;
         border-radius: 50%;
-        background: radial-gradient(circle at center, rgba(74, 168, 255, 0.22), transparent 65%);
+        background: radial-gradient(circle at center, color-mix(in srgb, var(--li-info) 24%, transparent), transparent 65%);
       }
 
       .mapCenter {
@@ -436,9 +436,9 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         display: grid;
         place-items: center;
         border-radius: 50%;
-        background: linear-gradient(180deg, rgba(17, 56, 102, 0.95), rgba(17, 37, 68, 0.95));
-        border: 1px solid rgba(74, 168, 255, 0.36);
-        box-shadow: 0 0 0 10px rgba(31, 95, 255, 0.08);
+        background: linear-gradient(180deg, color-mix(in srgb, var(--li-info) 48%, var(--li-surface-strong)), color-mix(in srgb, var(--li-info) 30%, var(--li-panel)));
+        border: 1px solid color-mix(in srgb, var(--li-info) 34%, var(--li-border));
+        box-shadow: 0 0 0 10px color-mix(in srgb, var(--li-info) 10%, transparent);
         font-weight: 800;
       }
 
@@ -483,7 +483,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         top: -1px;
         height: 2px;
         transform-origin: left center;
-        background: linear-gradient(90deg, rgba(26, 214, 107, 0.65), rgba(255, 191, 60, 0.72));
+        background: linear-gradient(90deg, color-mix(in srgb, var(--li-accent) 72%, transparent), color-mix(in srgb, var(--li-warn) 76%, transparent));
       }
 
       .trackNode {
@@ -496,10 +496,10 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         display: grid;
         place-items: center;
         border-radius: 50%;
-        background: linear-gradient(180deg, rgba(255, 194, 111, 0.94), rgba(217, 133, 36, 0.9));
-        color: #0d151d;
+        background: linear-gradient(180deg, color-mix(in srgb, var(--li-warn) 82%, white 18%), color-mix(in srgb, var(--li-warn) 78%, #8f5814 22%));
+        color: color-mix(in srgb, var(--li-text) 16%, #081018 84%);
         font-weight: 800;
-        border: 2px solid rgba(255, 255, 255, 0.18);
+        border: 2px solid color-mix(in srgb, var(--li-text) 12%, transparent);
         box-shadow: var(--li-shadow-strong);
       }
 
@@ -510,8 +510,8 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         min-width: 4rem;
         padding: 0.42rem 0.5rem;
         border-radius: 12px;
-        background: rgba(11, 17, 24, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: var(--li-surface-muted);
+        border: 1px solid color-mix(in srgb, var(--li-text) 10%, transparent);
       }
 
       .trackLabel strong,
@@ -540,7 +540,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
       .tableRow {
         padding: 0.75rem 0.85rem;
         border-radius: 16px;
-        background: rgba(14, 22, 30, 0.74);
+        background: color-mix(in srgb, var(--li-surface-muted) 88%, transparent);
         border: 1px solid var(--li-border);
       }
 
@@ -549,7 +549,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
       }
 
       .tableRowFocus {
-        background: rgba(18, 30, 40, 0.96);
+        background: var(--li-surface-strong);
         box-shadow: var(--li-glow);
       }
 
@@ -559,8 +559,12 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         display: grid;
         place-items: center;
         border-radius: 50%;
-        background: linear-gradient(180deg, rgba(255, 193, 114, 0.24), rgba(74, 168, 255, 0.2));
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--li-warn) 24%, transparent),
+          color-mix(in srgb, var(--li-info) 20%, transparent)
+        );
+        border: 1px solid color-mix(in srgb, var(--li-text) 10%, transparent);
         font-weight: 800;
       }
 
@@ -609,7 +613,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         min-height: 7rem;
         margin-top: 0.85rem;
         border-radius: 16px;
-        background: rgba(8, 14, 20, 0.7);
+        background: color-mix(in srgb, var(--li-surface-muted) 84%, transparent);
         overflow: hidden;
       }
 
@@ -619,7 +623,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         top: 1rem;
         width: 8.4rem;
         height: 5.4rem;
-        border: 2px dashed rgba(255, 191, 60, 0.55);
+        border: 2px dashed color-mix(in srgb, var(--li-warn) 58%, transparent);
         border-left: none;
         border-radius: 0 100% 100% 0 / 0 100% 100% 0;
       }
@@ -630,7 +634,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         top: calc(50% - 1px);
         right: 3rem;
         height: 2px;
-        background: linear-gradient(90deg, var(--li-accent), rgba(255, 191, 60, 0.9));
+        background: linear-gradient(90deg, var(--li-accent), color-mix(in srgb, var(--li-warn) 88%, transparent));
       }
 
       .coneDot {
@@ -642,9 +646,9 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         display: grid;
         place-items: center;
         border-radius: 50%;
-        background: rgba(26, 214, 107, 0.26);
+        background: color-mix(in srgb, var(--li-accent) 28%, transparent);
         color: var(--li-accent-soft);
-        border: 1px solid rgba(26, 214, 107, 0.3);
+        border: 1px solid color-mix(in srgb, var(--li-accent) 32%, transparent);
         font-weight: 800;
       }
 
@@ -705,7 +709,7 @@ export class LocationIntelligenceDashboardCard extends LitElement implements Lov
         height: 0.52rem;
         border-radius: 50%;
         background: var(--li-accent);
-        box-shadow: 0 0 14px rgba(26, 214, 107, 0.34);
+        box-shadow: 0 0 14px color-mix(in srgb, var(--li-accent) 34%, transparent);
       }
 
       .empty {

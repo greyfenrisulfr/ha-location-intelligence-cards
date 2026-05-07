@@ -188,9 +188,9 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
         align-items: center;
         padding: 0.3rem 0.72rem;
         border-radius: 999px;
-        background: rgba(26, 214, 107, 0.12);
+        background: color-mix(in srgb, var(--li-accent) 12%, transparent);
         color: var(--li-accent-soft);
-        border: 1px solid rgba(26, 214, 107, 0.16);
+        border: 1px solid color-mix(in srgb, var(--li-accent) 18%, transparent);
         font-size: 0.78rem;
         font-weight: 700;
       }
@@ -206,8 +206,12 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
         display: grid;
         place-items: center;
         border-radius: 50%;
-        background: linear-gradient(180deg, rgba(255, 193, 114, 0.24), rgba(74, 168, 255, 0.2));
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--li-warn) 24%, transparent),
+          color-mix(in srgb, var(--li-info) 20%, transparent)
+        );
+        border: 1px solid color-mix(in srgb, var(--li-text) 10%, transparent);
         font-weight: 800;
       }
 
@@ -241,10 +245,10 @@ export class LocationIntelligenceCompassCard extends LitElement implements Lovel
         padding: 1.2rem 0.8rem;
         border-radius: 22px;
         background:
-          radial-gradient(circle at center, rgba(26, 214, 107, 0.12) 0, rgba(26, 214, 107, 0) 55%),
+          radial-gradient(circle at center, color-mix(in srgb, var(--li-accent) 12%, transparent) 0, transparent 55%),
           var(--li-grid);
         background-size: auto, 1.1rem 1.1rem;
-        background-color: rgba(8, 14, 20, 0.6);
+        background-color: color-mix(in srgb, var(--li-surface-muted) 82%, transparent);
         box-shadow: var(--li-glow);
       }
 

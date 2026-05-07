@@ -146,14 +146,14 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
         padding: 0.42rem 0.78rem;
         border-radius: 999px;
         font-size: 0.78rem;
-        background: rgba(13, 20, 28, 0.88);
+        background: var(--li-surface-muted);
         border: 1px solid var(--li-border);
         color: var(--li-muted);
       }
 
       .miniTabActive {
         color: var(--li-accent-soft);
-        background: rgba(26, 214, 107, 0.14);
+        background: color-mix(in srgb, var(--li-accent) 14%, transparent);
       }
 
       .notice,
@@ -199,8 +199,12 @@ export class LocationIntelligenceSubjectListCard extends LitElement implements L
         display: grid;
         place-items: center;
         border-radius: 50%;
-        background: linear-gradient(180deg, rgba(255, 193, 114, 0.24), rgba(74, 168, 255, 0.2));
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--li-warn) 24%, transparent),
+          color-mix(in srgb, var(--li-info) 20%, transparent)
+        );
+        border: 1px solid color-mix(in srgb, var(--li-text) 10%, transparent);
         font-weight: 800;
       }
 

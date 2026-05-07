@@ -1,6 +1,6 @@
 {
   "name": "ha-location-intelligence-cards",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": false,
   "type": "module",
   "description": "Frontend-only Home Assistant custom cards for location intelligence and spatial awareness.",

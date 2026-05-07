@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1 - 2026-05-07
+
+- Restored explicit light and dark theme token sets after the redesign collapsed the cards into a single dark-only palette.
+- Rebalanced the redesigned surfaces, tabs, map panels, avatars, and direction ring so dark mode stays close to the reference while light mode remains usable.
+
 ## 0.4.0 - 2026-05-07
 
 - Redesigned the cards toward a darker, app-like location intelligence UI with denser panels, stronger hierarchy, and map-style visual treatment.

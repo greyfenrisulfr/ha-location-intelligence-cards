@@ -45,7 +45,7 @@ export class LiDirectionRing extends LitElement {
         aspect-ratio: 1;
         border-radius: 50%;
         background:
-          radial-gradient(circle at center, rgba(10, 18, 26, 0) 0 38%, rgba(74, 168, 255, 0.06) 39%, rgba(10, 18, 26, 0) 46%),
+          radial-gradient(circle at center, transparent 0 38%, color-mix(in srgb, var(--li-info) 12%, transparent) 39%, transparent 46%),
           conic-gradient(from -90deg, var(--confidence-color) 0 var(--confidence), var(--li-ring-fill) 0),
           var(--li-ring-core);
         border: 1px solid var(--li-border);
@@ -147,7 +147,7 @@ export class LiDirectionRing extends LitElement {
         height: 50%;
         clip-path: polygon(50% 0, 100% 100%, 0 100%);
         background: linear-gradient(180deg, var(--li-accent-soft) 0%, var(--li-accent) 100%);
-        filter: drop-shadow(0 8px 14px rgba(26, 214, 107, 0.22));
+        filter: drop-shadow(0 8px 14px color-mix(in srgb, var(--li-accent) 28%, transparent));
       }
 
       .needle::after {
@@ -158,7 +158,7 @@ export class LiDirectionRing extends LitElement {
         width: 0.4rem;
         height: 34%;
         border-radius: 999px;
-        background: linear-gradient(180deg, rgba(74, 168, 255, 0.22), rgba(74, 168, 255, 0));
+        background: linear-gradient(180deg, color-mix(in srgb, var(--li-info) 32%, transparent), transparent);
       }
 
       .core {
@@ -167,13 +167,13 @@ export class LiDirectionRing extends LitElement {
         display: grid;
         place-items: center;
         border-radius: 50%;
-        background: linear-gradient(180deg, rgba(21, 32, 44, 0.98), rgba(12, 19, 27, 0.98));
-        border: 1px solid rgba(74, 168, 255, 0.18);
+        background: var(--li-surface-strong);
+        border: 1px solid color-mix(in srgb, var(--li-info) 22%, var(--li-border));
         color: var(--li-text);
         font-size: 1.2rem;
         font-weight: 800;
         letter-spacing: 0.12em;
-        box-shadow: 0 0 0 6px rgba(12, 19, 27, 0.78);
+        box-shadow: 0 0 0 6px color-mix(in srgb, var(--li-surface-muted) 92%, transparent);
       }
     `
   ];
